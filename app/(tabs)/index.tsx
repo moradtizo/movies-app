@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet } from "react-native";
 import Home from "../../screens/HomeScreen";
-import { getMovies } from "../../services/movies";
+import { getMovies, getTVShows } from "../../services/movies";
 import { Movie } from "../../types/movie";
 
 export default function Index() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [tvShows, setTVShows] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const data = await getMovies();
-      setMovies(data);
+      const [moviesData, tvShowsData] = await Promise.all([
+        getMovies(),
+        getTVShows(),
+      ]);
+      setMovies(moviesData);
+      setTVShows(tvShowsData);
       setLoading(false);
     };
 
@@ -20,7 +25,7 @@ export default function Index() {
 
   if (loading) return <ActivityIndicator size="large" style={styles.loader} />;
 
-  return <Home movies={movies} />;
+  return <Home movies={movies} tvShows={tvShows} />;
 }
 
 const styles = StyleSheet.create({

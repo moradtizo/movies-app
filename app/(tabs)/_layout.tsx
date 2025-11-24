@@ -1,7 +1,7 @@
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/styles';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
@@ -35,9 +35,9 @@ export default function TabLayout() {
         options={{
           title: 'Movies',
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
+            <MaterialCommunityIcons
+              name={focused ? "movie-open" : "movie-open-outline"}
               size={28}
-              name={focused ? "film.fill" : "film"}
               color={color}
             />
           ),
@@ -48,14 +48,28 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
+            <Ionicons
+              name={focused ? "search" : "search-outline"}
               size={28}
-              name={focused ? "magnifyingglass.circle.fill" : "magnifyingglass"}
               color={color}
             />
           ),
         }}
       />
+      <Tabs.Screen
+        name="watchlist"
+        options={{
+          title: 'Watchlist',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "heart" : "heart-outline"}
+              size={28}
+              color={color}
+            />
+          ),
+        }}
+      />
+      
     </Tabs>
   );
 }

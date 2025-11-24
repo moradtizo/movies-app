@@ -26,3 +26,19 @@ export const getMovieDetails = async (movieId: number): Promise<Movie | null> =>
     return null;
   }
 };
+
+export const getTVShows = async (): Promise<Movie[]> => {
+  try {
+    const response = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}`);
+    const data = await response.json();
+    // Map TV show data to Movie interface
+    return data.results.map((show: any) => ({
+      ...show,
+      title: show.name || show.original_name,
+      release_date: show.first_air_date,
+    })) as Movie[];
+  } catch (error) {
+    console.error("Error fetching TV shows:", error);
+    return [];
+  }
+};

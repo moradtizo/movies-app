@@ -1,8 +1,10 @@
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
 import { ThemedText } from "../components/themed-text";
 import { ThemedView } from "../components/themed-view";
+import WatchlistButton from "../components/WatchlistButton";
 import { Colors, Shadows } from "../constants/styles";
 import { getMovieDetails } from "../services/movies";
 import { Movie } from "../types/movie";
@@ -82,7 +84,7 @@ export default function MovieDetails() {
             {/* Rating Badge */}
             {movie.vote_average !== undefined && (
               <View style={[styles.ratingBadge, Shadows.medium]}>
-                <ThemedText style={styles.ratingIcon}>⭐</ThemedText>
+                <Ionicons name="star" size={18} color="#FFD700" />
                 <ThemedText style={styles.ratingValue}>
                   {movie.vote_average.toFixed(1)}
                 </ThemedText>
@@ -126,7 +128,7 @@ export default function MovieDetails() {
           <View style={styles.quickInfoContainer}>
             {movie.release_date && (
               <View style={[styles.infoCard, { backgroundColor: colors.surface }, Shadows.small]}>
-                <ThemedText style={styles.infoIcon}>📅</ThemedText>
+                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
                 <ThemedText style={[styles.infoLabel, { color: colors.textSecondary }]}>
                   Release
                 </ThemedText>
@@ -138,7 +140,7 @@ export default function MovieDetails() {
 
             {movie.runtime && (
               <View style={[styles.infoCard, { backgroundColor: colors.surface }, Shadows.small]}>
-                <ThemedText style={styles.infoIcon}>⏱️</ThemedText>
+                <MaterialCommunityIcons name="clock-outline" size={24} color={colors.primary} />
                 <ThemedText style={[styles.infoLabel, { color: colors.textSecondary }]}>
                   Runtime
                 </ThemedText>
@@ -150,7 +152,7 @@ export default function MovieDetails() {
 
             {movie.revenue !== undefined && movie.revenue > 0 && (
               <View style={[styles.infoCard, { backgroundColor: colors.surface }, Shadows.small]}>
-                <ThemedText style={styles.infoIcon}>💰</ThemedText>
+                <MaterialCommunityIcons name="cash" size={24} color={colors.primary} />
                 <ThemedText style={[styles.infoLabel, { color: colors.textSecondary }]}>
                   Revenue
                 </ThemedText>
@@ -161,9 +163,17 @@ export default function MovieDetails() {
             )}
           </View>
 
+          {/* Watchlist Button */}
+          <View style={styles.section}>
+            <WatchlistButton movie={movie} variant="button" size="large" />
+          </View>
+
           {/* Overview Section */}
           <View style={styles.section}>
-            <ThemedText style={styles.sectionTitle}>📖 Overview</ThemedText>
+            <View style={styles.sectionHeader}>
+              <MaterialCommunityIcons name="text" size={24} color={colors.primary} />
+              <ThemedText style={styles.sectionTitle}>Overview</ThemedText>
+            </View>
             <ThemedText style={[styles.overview, { color: colors.textSecondary }]}>
               {movie.overview}
             </ThemedText>
@@ -300,10 +310,15 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 24,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 12,
   },
   overview: {
     fontSize: 16,

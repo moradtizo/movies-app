@@ -1,9 +1,11 @@
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, useColorScheme, View } from "react-native";
-import { useRouter } from "expo-router";
-import { ThemedText } from "../themed-text";
+import { BorderRadius, Colors, FontSizes, Shadows, Spacing } from "../../constants/styles";
 import { Movie } from "../../types/movie";
-import { Colors, Spacing, BorderRadius, Shadows, FontSizes } from "../../constants/styles";
+import { ThemedText } from "../themed-text";
+import WatchlistButton from "../WatchlistButton";
 
 type Props = {
   movie: Movie;
@@ -47,14 +49,20 @@ export default function MovieCard({ movie }: Props) {
         {/* Rating Badge */}
         {movie.vote_average !== undefined && (
           <View style={[styles.ratingBadge, { backgroundColor: 'rgba(0, 0, 0, 0.7)' }]}>
+            <Ionicons name="star" size={14} color="#FFD700" />
             <ThemedText style={styles.ratingText}>
-              ⭐ {movie.vote_average.toFixed(1)}
+              {movie.vote_average.toFixed(1)}
             </ThemedText>
           </View>
         )}
+
+        {/* Watchlist Button */}
+        <View style={styles.watchlistButton}>
+          <WatchlistButton movie={movie} variant="icon" size="medium" />
+        </View>
       </View>
 
-      <View style={styles.content}>
+      {/* <View style={styles.content}>
         <ThemedText style={styles.title} numberOfLines={2}>
           {movie.title}
         </ThemedText>
@@ -73,7 +81,7 @@ export default function MovieCard({ movie }: Props) {
             {movie.overview}
           </ThemedText>
         )}
-      </View>
+      </View> */}
     </Pressable>
   );
 }
@@ -109,6 +117,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: Spacing.sm,
     right: Spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.xs,
     borderRadius: BorderRadius.md,
@@ -117,6 +128,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: FontSizes.sm,
     fontWeight: '600',
+  },
+  watchlistButton: {
+    position: 'absolute',
+    top: Spacing.sm,
+    left: Spacing.sm,
   },
   content: {
     padding: Spacing.md,
